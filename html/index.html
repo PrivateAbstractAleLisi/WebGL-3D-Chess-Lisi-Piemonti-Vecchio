@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D CHESS</title>
+
+    <!-- WEB GL  -->
+    <script type="text/javascript" src="../scripts/utils.js" ></script>
+
+    <script type="text/javascript" src="../scripts/webgl-obj-loader.min.js" ></script>
+
+
+    <script src="https://webgl2fundamentals.org/webgl/resources/m4.js"></script>
+
+    <!-- CHESS ENGINE -->
+    <script type="module" src="../scripts/js-chess-engine.mjs"></script>
+    <script type='text/javascript' >
+        window.isAnimating = false;
+        window.isPromoting = false;
+    </script>
+    <script type="module" src="../scripts/index.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body class="text-center">
+
+
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+            <h3 class="masthead-brand">3D CHESS</h3>
+            <nav class="nav nav-masthead justify-content-center">
+                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link" href="about.html">About</a>
+            </nav>
+        </div>
+    </header>
+
+
+    <div class="d-flex bd-highlight">
+
+        <!-- card on the left -->
+        <div class="card bg-dark text-white" style="width: 22rem;   height: 700px;
+                overflow-x: hidden;
+                overflow-y: auto;">
+            <div class="card-body">
+                <h5> Ambient Light controls</h5>
+                <br>
+                <form class="controls">
+                    <label for="lx" class="form-label">Light Direction (x)</label>
+                    <input type="range" class="form-range" min="-1" max="1" id="lx" value="-0.2" step="0.001">
+                    <label for="ly" class="form-label">Light Direction (y)</label>
+                    <input type="range" class="form-range" min="-1" max="1" id="ly" value="0.8" step="0.001">
+                    <label for="lz" class="form-label">Light Direction (z)</label>
+                    <input type="range" class="form-range" min="-1" max="1" id="lz" value="0.7" step="0.001">
+                    <br>
+                    <br>
+                    <h5> Spot Light controls</h5>
+                    <br>
+                    <label for="lxs" class="form-label">Spot Light Direction (x)</label>
+                    <input type="range" class="form-range" min="-1" max="1" id="lxs" value="0" step="0.001">
+                    <label for="lys" class="form-label">Spot Light Direction (y)</label>
+                    <input type="range" class="form-range" min="-1" max="1" id="lys" value="1" step="0.001">
+                    <label for="lzs" class="form-label">Spot Light Direction (z)</label>
+                    <input type="range" class="form-range" min="-1" max="1" id="lzs" value="0" step="0.001">
+                    <label for="pxs" class="form-label">Spot Light Position (x)</label>
+                    <input type="range" class="form-range" min="-13" max="13" id="pxs" value="0" step="0.02">
+                    <label for="pys" class="form-label">Spot Light Position (y)</label>
+                    <input type="range" class="form-range" min="-13" max="60" id="pys" value="13" step="0.02">
+                    <label for="pzs" class="form-label">Spot Light Position (z)</label>
+                    <input type="range" class="form-range" min="-13" max="13" id="pzs" value="0" step="0.02">
+                    <label for="decays" class="form-label">Spot Light Decay </label>
+                    <input type="range" class="form-range" min="0" max="2" id="decays" value="0" step="1">
+                    <label for="conein" class="form-label">Spot Light Cone in </label>
+                    <input type="range" class="form-range" min="0" max="100" id="conein" value="0" step="1">
+                    <label for="coneout" class="form-label">Spot Light Cone out </label>
+                    <input type="range" class="form-range" min="0" max="100" id="coneout" value="50" step="1">
+                    <br>
+                    <br>
+                    <h5> Point Light controls</h5>
+                    <br>
+                    <label for="px" class="form-label">Point Light Position (x)</label>
+                    <input type="range" class="form-range" min="-13" max="13" id="px" value="0" step="0.02">
+                    <label for="py" class="form-label">Point Light Position (y)</label>
+                    <input type="range" class="form-range" min="-13" max="13" id="py" value="0" step="0.02">
+                    <label for="pz" class="form-label">Point Light Position (z)</label>
+                    <input type="range" class="form-range" min="-13" max="13" id="pz" value="0" step="0.02">
+                    <br>
+                    <br>
+                    <h5> Lights colors</h5>
+                    <br>
+                    <label>
+                        Directional Light Color:
+                        <input type="color" id ="directional-light-color" value="#626255">
+                    </label>
+                    <label>
+                        Spot Light Color:
+                        <input type="color" id ="spot-light-color" value="#f7f5e9">
+                    </label>
+
+                    <label>
+                        Point Light Color:
+                        <input type="color" id ="point-light-color" value="#000000">
+                    </label>
+
+                    <label>
+                        Ambient Color:
+                        <input type="color" id ="ambient-light-color" value="#212121">
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="p-2 w-100 bd-highlight">
+            <main class="inner cover">
+                <canvas id="game-canvas" class="img-responsive" width="1280" height="720">
+                    Canvas is not available in your browser!
+                </canvas>
+            </main>
+        </div>
+
+        <!-- card on the right -->
+        <div class="p-2 bd-highlight">
+            <div class="card bg-dark text-white" style="width: 13rem; height: fit-content">
+                <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+                <div class="card-body">
+                    <h5 class="card-title" id="game-title">Game controls</h5>
+                    <br>
+                    <h6 class="card-title" id="gameType-subtitle">Select game type</h6>
+
+                    <div class="btn-group-vertical btn-group-toggle btn-group-sm" data-toggle="buttons">
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="gametype" id="optionIAvIA" autocomplete="off" checked> PC vs PC
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="gametype" id="optionHvIA" autocomplete="off"> Human vs PC
+                        </label><label class="btn btn-secondary">
+                        <input type="radio" name="gametype" id="optionHvH" autocomplete="off"> Human vs Human
+                    </label>
+                    </div>
+
+                    <hr/>
+
+                    <h6 class="card-title" id="level-subtitle">Select computer level</h6>
+
+                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="optionIA" id="optionIA0" autocomplete="off"> 0
+                        </label>
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="optionIA" id="optionIA1" autocomplete="off" checked> 1
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="optionIA" id="optionIA2" autocomplete="off"> 2
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="optionIA" id="optionIA3" autocomplete="off"> 3
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="optionIA" id="optionIA4" autocomplete="off"> 4
+                        </label>
+                    </div>
+
+                    <hr/>
+
+                    <h6 class="card-title" id="side-subtitle">Play as</h6>
+
+                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="playAs" id="optionWhite" autocomplete="off"> White
+                        </label>
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="playAs" id="optionRandom" autocomplete="off" checked> Random
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="playAs" id="optionBlack" autocomplete="off"> Black
+                        </label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" id="card-subtitle">Theme</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select theme
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownElements"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- card on the bottom -->
+        <div class="card bg-dark text-white flex-row" style="height: 60px;">
+            <div>
+                <h5 style="margin-left: 10px; margin-top: 6px">Change View </h5>
+            </div>
+            <div>
+                <p style="width: 200px; margin-top: 8px">
+                    <button type="button" class="btn btn-primary" id="view_btn" >Change View </button>
+                </p>
+            </div>
+            <div class="p-2 bd-highlight" style="width: 3000px">
+             <p align="left"> &#8226 Use arrows or  <img src="../assets/images/wasd.png" width="80px">
+                 to move the camera <u>up/down</u> and <u>right/left</u>
+             </p>
+            </div>
+            <div class="p-2 bd-highlight" style="width: 150rem">
+                <p align="left"> &#8226 Use <img src="../assets/images/letter_z.png" width="35px">
+                    and <img src="../assets/images/letter_x.png" width="35px"> to <u>zoom</u>
+                </p>
+            </div>
+            <button type="button" class="btn btn-success btn-lg btn-block" style="width: 1000px" id="startGameButton">Start new game</button>
+
+        </div>
+
+
+    <footer class="mastfoot mt-auto">
+        <div class="inner">
+            <p>© Luca Vecchio, Alessandro Lisi, Alice Piemonti</p>
+        </div>
+    </footer>
+</div>
+<div id = "promotionModal" class="modal fade bd-promotion-modal-lg" tabindex="-1" role="dialog" aria-labelledby="promotionModal" aria-hidden="true" style="color:black !important">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Promotion</h5>
+            </div>
+            <div class="modal-body">
+                <p> Select a piece for the promotion: </p>
+
+                <div class="row">
+                    <div class="col-sm-3"
+                         onclick="setPromotingPiece('Q')">
+                        <div class="card" style="width: fit-content; width: -moz-fit-content">
+                            <img class="card-img-top" src="../assets/images/queen.jfif" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text">Queen</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" onclick="setPromotingPiece('R')">
+                        <div class="card" style="width: fit-content; width: -moz-fit-content">
+                            <img class="card-img-top" src="../assets/images/rook.jfif" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text">Rook</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" onclick="setPromotingPiece('B')">
+                        <div class="card" style="width: fit-content; width: -moz-fit-content">
+                            <img class="card-img-top" src="../assets/images/bishop.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text">Bishop</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" onclick="setPromotingPiece('N')">
+                        <div class="card" style="width: fit-content; width: -moz-fit-content">
+                            <img class="card-img-top" src="../assets/images/knight.jfif" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text">Knight</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="../scripts/Pieces.js"></script>
+<script type="text/javascript" src="../scripts/Raycast.js" ></script>
+<script type="text/javascript" src="../scripts/Classes.js" ></script>
+<script type="text/javascript" src="../scripts/App.js" ></script>
+<script type="text/javascript" src="../scripts/Camera.js" ></script>
+<script type="text/javascript" src="../scripts/promotion.js" ></script>
+</html>
+
