@@ -1,4 +1,4 @@
-# 3D Chess Videogame - Developed in WebGL from scratch 
+# 3D Chess Videogame - a WebGL Computer Graphics Project 
 
 This game was developed as a computer game for the final examination of the Computer Graphics course at Politecnico di Milano (A.Y. 2020/2021) - MSc Computer Science.
 <br>
@@ -19,3 +19,5 @@ Final score was ***30 cum laude / 30*** (A+)
 > Customizable Spotlight (Decay), Directional Light, Point Light, Ambient Light + Emission
 > Different KITS (Wood, Plastic, Neon, Marble) changing shader’s parameters and look and feel
 > HTML GUI + Promotion card selection via user interface
+
+Developed from scratch using WebGL and JS.
